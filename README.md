@@ -1,5 +1,7 @@
-# Due Diligence OS — Foundation Rebuild
+# Due Diligence OS v1.1
 
-A Foundation OS-style mobile-first PWA for evaluating opportunities.
+Foundation-style opportunity evaluation app.
 
-Tracks: Questions, Market, Customer, Technology, Commercial.
+Pillars: Questions, Research, Customer, Technology, Commercial.
+
+Adds More tab with Import, Export, and Clear Data.

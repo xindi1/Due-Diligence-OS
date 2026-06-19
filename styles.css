@@ -16,18 +16,21 @@
 .opp-setter{display:grid;grid-template-columns:1fr auto;gap:10px;margin:14px 0 8px}
 .opp-setter button{border:0;border-radius:16px;padding:0 16px;color:white;font-weight:900;background:var(--blue)}
 .opp-list{padding-bottom:10px}
+.bottom-nav{grid-template-columns:repeat(7,1fr)}
 .domain-view[data-domain="questions"] .domain-title span,.domain-view[data-domain="questions"] .accent{color:var(--blue)}
-.domain-view[data-domain="market"] .domain-title span,.domain-view[data-domain="market"] .accent{color:#0284c7}
+.domain-view[data-domain="research"] .domain-title span,.domain-view[data-domain="research"] .accent{color:#0284c7}
 .domain-view[data-domain="customer"] .domain-title span,.domain-view[data-domain="customer"] .accent{color:var(--orange)}
 .domain-view[data-domain="technology"] .domain-title span,.domain-view[data-domain="technology"] .accent{color:var(--green)}
 .domain-view[data-domain="commercial"] .domain-title span,.domain-view[data-domain="commercial"] .accent{color:#d97706}
 .domain-view[data-domain="questions"] button[type="submit"]{background:var(--blue)}
-.domain-view[data-domain="market"] button[type="submit"]{background:#0284c7}
+.domain-view[data-domain="research"] button[type="submit"]{background:#0284c7}
 .domain-view[data-domain="customer"] button[type="submit"]{background:var(--orange)}
 .domain-view[data-domain="technology"] button[type="submit"]{background:var(--green)}
 .domain-view[data-domain="commercial"] button[type="submit"]{background:#d97706}
 .nav-btn[data-view="questions"].active{background:#dbeafe;color:var(--blue)}
-.nav-btn[data-view="market"].active{background:#e0f2fe;color:#0284c7}
+.nav-btn[data-view="research"].active{background:#e0f2fe;color:#0284c7}
 .nav-btn[data-view="customer"].active{background:#ffedd5;color:var(--orange)}
 .nav-btn[data-view="technology"].active{background:#dcfce7;color:var(--green)}
 .nav-btn[data-view="commercial"].active{background:#fef3c7;color:#d97706}
+.nav-btn[data-view="settings"].active{background:#dbeafe;color:var(--blue)}
+@media(max-width:430px){.bottom-nav{gap:2px}.nav-btn{font-size:16px;padding:8px 1px}.nav-btn span{font-size:9px}}

@@ -1,11 +1,11 @@
 
-const STORAGE_KEY='due_diligence_os_entries_v1';
+const STORAGE_KEY='due_diligence_os_entries_v1_1';
 const THEME_KEY='due_diligence_os_theme';
 const OPP_KEY='due_diligence_os_active_opp';
 
 const domains={
  questions:{label:'Questions',signal:'Unknowns',prompts:['How many exist?','What do providers charge?','Who feels this pain?','Current workaround?','What must be true?']},
- market:{label:'Market',signal:'Size',prompts:['Market count','Segment size','Geography','Growth signal','Spend estimate']},
+ research:{label:'Research',signal:'Findings',prompts:['Market fact','Competitor fact','Pricing fact','Industry data','Regulatory finding']},
  customer:{label:'Customer',signal:'Voice',prompts:['Interview note','User quote','Observed pain','Board member input','Attorney input']},
  technology:{label:'Technology',signal:'Fit',prompts:['Repetitive task','Rules-based task','Communication-heavy','Human judgment required','AI opportunity']},
  commercial:{label:'Commercial',signal:'Revenue',prompts:['SaaS path','Service path','Licensing path','Buyer','Pricing model']}
@@ -69,10 +69,10 @@ function renderOpportunity(){
 function renderMetrics(){Object.keys(domains).forEach(d=>{const n=getAllEntries(d).length;setText(`${d}Metric`,`${n} entr${n===1?'y':'ies'}`);setText(`${d}Sub`,n?`${n} total for this opportunity`:'Not logged');setText(`${d}Score`,n)})}
 function renderDashboard(){
  setText('greeting',greetingText());
- const icons={questions:'?',market:'◌',customer:'◉',technology:'✦',commercial:'$'};
- const colors={questions:'#dbeafe',market:'#e0f2fe',customer:'#ffedd5',technology:'#dcfce7',commercial:'#fef3c7'};
+ const icons={questions:'?',research:'⌕',customer:'◉',technology:'✦',commercial:'$'};
+ const colors={questions:'#dbeafe',research:'#e0f2fe',customer:'#ffedd5',technology:'#dcfce7',commercial:'#fef3c7'};
  const wrap=document.getElementById('domainCards');
- if(wrap)wrap.innerHTML=['questions','market','customer','technology','commercial'].map(k=>{const d=domains[k],n=getAllEntries(k).length,t=getEntries(k).length;return `<article class="summary-row" onclick="switchView('${k}')"><div class="summary-icon" style="background:${colors[k]}">${icons[k]}</div><div><div class="summary-title">${d.label}</div><div class="summary-meta">${n?n+' total · '+t+' today':'Not logged'}</div></div><div class="summary-score">${n}<div class="small muted">inputs</div></div><div class="chev">›</div></article>`}).join('');
+ if(wrap)wrap.innerHTML=['questions','research','customer','technology','commercial'].map(k=>{const d=domains[k],n=getAllEntries(k).length,t=getEntries(k).length;return `<article class="summary-row" onclick="switchView('${k}')"><div class="summary-icon" style="background:${colors[k]}">${icons[k]}</div><div><div class="summary-title">${d.label}</div><div class="summary-meta">${n?n+' total · '+t+' today':'Not logged'}</div></div><div class="summary-score">${n}<div class="small muted">inputs</div></div><div class="chev">›</div></article>`}).join('');
  const day=getEntries();setText('entryCount',`${day.length} ${day.length===1?'entry':'entries'}`);
  const l=document.getElementById('todayEntries');if(l){l.classList.toggle('empty',!day.length);l.innerHTML=day.length?day.map(entryHtml).join(''):'No due diligence entries yet.'}
  renderWeekBars();
@@ -83,10 +83,10 @@ function entryHtml(e){const extra=Object.entries(e.meta||{}).filter(([k,v])=>v).
 function deleteEntry(id){entries=entries.filter(e=>e.id!==id);persist();render()}
 function renderChips(){document.querySelectorAll('.chips').forEach(w=>{const d=w.dataset.target;w.innerHTML=domains[d].prompts.map(p=>`<button type="button">${p}</button>`).join('');w.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>fillPrompt(d,b.textContent)))})}
 function fillPrompt(d,text){const v=document.querySelector(`.domain-view[data-domain="${d}"]`);const ta=v?.querySelector('textarea');if(!ta)return;ta.value=ta.value?`${ta.value}\n${text}`:text;ta.focus()}
-function buildBrief(){const collect=d=>getAllEntries(d).map(e=>`- ${e.text}`).join('\n')||'- Not yet captured';return `DUE DILIGENCE BRIEF\n\nOpportunity: ${currentOpp()}\nGenerated: ${new Date().toLocaleString()}\n\nRESEARCH QUESTIONS\n${collect('questions')}\n\nMARKET\n${collect('market')}\n\nCUSTOMER\n${collect('customer')}\n\nTECHNOLOGY FIT\n${collect('technology')}\n\nCOMMERCIALIZATION\n${collect('commercial')}\n\nPRELIMINARY RECOMMENDATION\nChoose one: Kill / Monitor / Explore / Build / Accelerate\n`}
+function buildBrief(){const collect=d=>getAllEntries(d).map(e=>`- ${e.text}`).join('\n')||'- Not yet captured';return `DUE DILIGENCE BRIEF\n\nOpportunity: ${currentOpp()}\nGenerated: ${new Date().toLocaleString()}\n\nQUESTIONS\n${collect('questions')}\n\nRESEARCH\n${collect('research')}\n\nCUSTOMER\n${collect('customer')}\n\nTECHNOLOGY FIT\n${collect('technology')}\n\nCOMMERCIALIZATION\n${collect('commercial')}\n\nPRELIMINARY RECOMMENDATION\nChoose one: Kill / Monitor / Explore / Build / Accelerate\n`}
 function exportBrief(){if(!activeOpportunity.trim()){alert('Name an opportunity first.');return}const blob=new Blob([buildBrief()],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${currentOpp().toLowerCase().replace(/[^a-z0-9]+/g,'-')}-due-diligence-brief.txt`;a.click();URL.revokeObjectURL(a.href)}
 function toggleTheme(){document.documentElement.classList.toggle('dark');localStorage.setItem(THEME_KEY,document.documentElement.classList.contains('dark')?'dark':'light')}
-function exportData(){const blob=new Blob([JSON.stringify({app:'Due Diligence OS',version:1,exportedAt:new Date().toISOString(),activeOpportunity,entries},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`due-diligence-os-export-${todayKey()}.json`;a.click();URL.revokeObjectURL(a.href)}
+function exportData(){const blob=new Blob([JSON.stringify({app:'Due Diligence OS',version:'1.1',exportedAt:new Date().toISOString(),activeOpportunity,entries},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`due-diligence-os-export-${todayKey()}.json`;a.click();URL.revokeObjectURL(a.href)}
 function importData(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);if(Array.isArray(data.entries)){entries=[...data.entries,...entries];if(data.activeOpportunity)activeOpportunity=data.activeOpportunity;persist();persistOpp();render();alert('Import complete.')}else alert('Import file did not contain entries.')}catch{alert('Could not import JSON.')}};r.readAsText(f);ev.target.value=''}
 function clearAll(){if(confirm('Clear all Due Diligence OS entries on this device?')){entries=[];activeOpportunity='';persist();persistOpp();render()}}
 window.deleteEntry=deleteEntry;window.switchView=switchView;window.chooseOpp=chooseOpp;init();
