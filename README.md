@@ -1,7 +1,10 @@
-# Due Diligence OS v1.1
+# Due Diligence OS v1.2 Full Release
 
-Foundation-style opportunity evaluation app.
-
-Pillars: Questions, Research, Customer, Technology, Commercial.
-
-Adds More tab with Import, Export, and Clear Data.
+## Changes
+- Added Hypotheses
+- Added Decisions
+- Renamed Technology to Solution
+- Added Opportunity Status and Thesis
+- Fixed dashboard rendering for Today’s Entries and 7-Day Activity
+- Improved import/export
+- Backward-compatible import normalization for `domain`, `track`, and legacy Technology entries
